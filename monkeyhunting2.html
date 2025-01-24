@@ -1,271 +1,154 @@
-<div id="glowscript" class="glowscript">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
-<link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
-<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
-<script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
-<script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
-<script type="text/javascript"><!--//--><![CDATA[//><!--
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Monkey Hunting Simulation</title>
+  <!-- GlowScriptの外部リソース -->
+  <link rel="stylesheet" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css">
+  <link rel="stylesheet" href="https://www.glowscript.org/css/ide.css">
+  <script src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+  <script src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+  <script src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+  <script src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+</head>
+<body>
+  <div id="glowscript" class="glowscript"></div>
+  <script>
+    (function() {
+      "use strict";
+      
+      // シーンの設定
+      var scene = canvas({center: vec(10, 10, 0), width: 800, height: 800, range: 20});
 
-// START JAVASCRIPT
-;(function() {;
-var ρσ_modules = {};
-var running, reset_flag, v0, theta, t, ball1, ball2;
-ρσ_modules.pythonize = {};
+      // グローバル変数
+      var g = 9.8;   // 重力加速度
+      var h = 0.005; // 時間幅
+      var v0 = 20;   // 初期速度
+      var theta = 30 * Math.PI / 180; // 初期角度 (ラジアン)
+      var running = false;
+      var reset_flag = false;
+      var t = 0; // 初期時刻
+      var L = 20;
 
-(function(){
-    function strings() {
-        var string_funcs, exclude, name;
-        string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
-        if (!arguments.length) {
-            exclude = (function(){
-                var s = ρσ_set();
-                s.jsset.add("split");
-                s.jsset.add("replace");
-                return s;
-            })();
-        } else if (arguments[0]) {
-            exclude = Array.prototype.slice.call(arguments);
-        } else {
-            exclude = null;
-        }
-        if (exclude) {
-            string_funcs = string_funcs.difference(set(exclude));
-        }
-        var ρσ_Iter0 = string_funcs;
-        ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
-        for (var ρσ_Index0 of ρσ_Iter0) {
-            name = ρσ_Index0;
-            (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
-        }
-    };
-    if (!strings.__module__) Object.defineProperties(strings, {
-        __module__ : {value: "pythonize"}
-    });
+      // ボールの設定
+      var ball1 = sphere({
+        pos: vec(0, 0, 0),
+        radius: 0.5,
+        color: color.red,
+        make_trail: true,
+        trail_type: "points",
+        interval: 10,
+        retain: 100
+      });
+      var ball2 = sphere({
+        radius: 0.5,
+        color: color.blue,
+        make_trail: true,
+        trail_type: "points",
+        interval: 10,
+        retain: 100
+      });
 
-    ρσ_modules.pythonize.strings = strings;
-})();
-async function __main__() {
-"use strict";
-    var display = canvas;
-    var scene = canvas();
-
-    var version, print, arange, __name__, type, ρσ_ls, scene, g, h, v0, theta, running, reset_flag, t, L, ball1, ball2, Run_Pause_button, reset_button, C, velocity_label, velocity_slider, angle_label, angle_slider;
-    version = ρσ_list_decorate([ "3.2", "glowscript" ]);
-    Array.prototype['+'] = function(r) {return this.concat(r)}
-    Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
-    window.__GSlang = "vpython";
-    print = GSprint;
-    arange = range;
-    __name__ = "__main__";
-    type = pytype;
-    var strings = ρσ_modules.pythonize.strings;
-
-    strings();
-    "4";
-    scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({center: vec(10, 10, 0), width: 800, height: 800, range: 20})]);
-    "7";
-    g = 9.8;
-    "8";
-    h = .005;
-    "9";
-    v0 = 20;
-    "10";
-    theta = 30["*"](pi)["/"](180);
-    "11";
-    running = false;
-    "12";
-    reset_flag = false;
-    "13";
-    t = 0;
-    "14";
-    L = 20;
-    "17";
-    ball1 = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), radius: .5, color: color.red, make_trail: true, trail_type: "points", interval: 10, retain: 100})]);
-    "19";
-    ball2 = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({radius: .5, color: color.blue, make_trail: true, trail_type: "points", interval: 10, retain: 100})]);
-    "23";
-    async function Run(b) {
-        "24";
-        "25";
+      // ボタンの設定
+      function Run(b) {
         running = !running;
-        "26";
-        if (running) {
-            "27";
-            b.text = "Pause";
-            "28";
-        } else {
-            "29";
-            b.text = "Run";
-        }
-    };
-    if (!Run.__argnames__) Object.defineProperties(Run, {
-        __argnames__ : {value: ["b"]},
-        __module__ : {value: null}
-    });
+        b.text = running ? "Pause" : "Run";
+      }
 
-    "31";
-    async function reset_animation() {
-        "32";
-        "33";
+      function reset_animation() {
         reset_flag = true;
-    };
-    if (!reset_animation.__module__) Object.defineProperties(reset_animation, {
-        __module__ : {value: null}
-    });
+      }
 
-    "35";
-    Run_Pause_button = ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({text: "Run", bind: Run})]);
-    "36";
-    reset_button = ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({text: "リセット", bind: reset_animation})]);
-    "37";
-    scene.append_to_caption("\n");
-    "40";
-    C = color.white;
-    "41";
-    ρσ_interpolate_kwargs.call(this, curve, [ρσ_desugar_kwargs({pos: ρσ_list_decorate([ vec(0, 0, 0), vec(23, 0, 0) ]), color: C})]);
-    "42";
-    ρσ_interpolate_kwargs.call(this, curve, [ρσ_desugar_kwargs({pos: ρσ_list_decorate([ vec(0, 0, 0), vec(0, 20, 0) ]), color: C})]);
-    "43";
-    ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(0, 1["-u"]()["*"](2), 0), text: "O", color: C, height: 20, box: false})]);
-    "44";
-    ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(23, 1["-u"]()["*"](2), 0), text: "x", color: C, height: 20, box: false})]);
-    "45";
-    ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(1["-u"]()["*"](2), 20, 0), text: "y", color: C, height: 20, box: false})]);
-    "48";
-    async function update_velocity(s) {
-        "49";
-        "50";
+      var Run_Pause_button = button({text: "Run", bind: Run});
+      var reset_button = button({text: "リセット", bind: reset_animation});
+      scene.append_to_caption("\n");
+
+      // 座標軸の描画
+      var C = color.white;
+      curve({pos: [vec(0, 0, 0), vec(23, 0, 0)], color: C});
+      curve({pos: [vec(0, 0, 0), vec(0, 20, 0)], color: C});
+      label({pos: vec(0, -2, 0), text: 'O', color: C, height: 20, box: false});
+      label({pos: vec(23, -2, 0), text: 'x', color: C, height: 20, box: false});
+      label({pos: vec(-2, 20, 0), text: 'y', color: C, height: 20, box: false});
+
+      // スライダーの設定
+      function update_velocity(s) {
         v0 = s.value;
-        "51";
-        velocity_label.text = "Initial Velocity: "["+"](ρσ_str.format("{:.1f}", v0))["+"](" m/s");
-        "52";
+        velocity_label.text = `Initial Velocity: ${v0.toFixed(1)} m/s`;
         reset_flag = true;
-    };
-    if (!update_velocity.__argnames__) Object.defineProperties(update_velocity, {
-        __argnames__ : {value: ["s"]},
-        __module__ : {value: null}
-    });
+      }
 
-    "54";
-    async function update_angle(s) {
-        "55";
-        "56";
-        theta = s.value["*"](pi)["/"](180);
-        "57";
-        angle_label.text = "Initial Angle: "["+"](ρσ_str.format("{:.1f}", s.value))["+"]("°");
-        "58";
+      function update_angle(s) {
+        theta = s.value * Math.PI / 180;
+        angle_label.text = `Initial Angle: ${s.value.toFixed(1)}°`;
         reset_flag = true;
-    };
-    if (!update_angle.__argnames__) Object.defineProperties(update_angle, {
-        __argnames__ : {value: ["s"]},
-        __module__ : {value: null}
-    });
+      }
 
-    "60";
-    velocity_label = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: "Initial Velocity: "["+"](ρσ_str.format("{:.1f}", v0))["+"](" m/s")})]);
-    "61";
-    scene.append_to_caption("\n");
-    "62";
-    velocity_slider = ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 5, max: 40, value: 20, step: .1, length: 300, bind: update_velocity})]);
-    "63";
-    scene.append_to_caption("\n");
-    "65";
-    angle_label = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: "Initial Angle: "["+"](ρσ_str.format("{:.1f}", theta["*"](180)["/"](pi)))["+"]("°")})]);
-    "66";
-    scene.append_to_caption("\n");
-    "67";
-    angle_slider = ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 10, max: 50, value: 30, step: 1, length: 300, bind: update_angle})]);
-    "68";
-    scene.append_to_caption("\n");
-    "71";
-    async function reset_simulation() {
-        "72";
-        "73";
+      var velocity_label = wtext({text: `Initial Velocity: ${v0.toFixed(1)} m/s`});
+      scene.append_to_caption("\n");
+      var velocity_slider = slider({
+        min: 5, max: 40, value: 20, step: 0.1, length: 300, bind: update_velocity
+      });
+      scene.append_to_caption("\n");
+
+      var angle_label = wtext({text: `Initial Angle: ${(theta * 180 / Math.PI).toFixed(1)}°`});
+      scene.append_to_caption("\n");
+      var angle_slider = slider({
+        min: 10, max: 50, value: 30, step: 1, length: 300, bind: update_angle
+      });
+      scene.append_to_caption("\n");
+
+      // 初期設定
+      function reset_simulation() {
         ball1.pos = vec(0, 0, 0);
-        "74";
-        ball2.pos = vec(L, L["*"](tan(theta)), 0);
-        "75";
-        ball1.vel = vec(v0["*"](cos(theta)), v0["*"](sin(theta)), 0);
-        "76";
+        ball2.pos = vec(L, L * Math.tan(theta), 0);
+        ball1.vel = vec(v0 * Math.cos(theta), v0 * Math.sin(theta), 0);
         ball2.vel = vec(0, 0, 0);
-        "77";
         ball1.clear_trail();
-        "78";
         ball2.clear_trail();
-        "79";
         t = 0;
-    };
-    if (!reset_simulation.__module__) Object.defineProperties(reset_simulation, {
-        __module__ : {value: null}
-    });
+      }
 
-    "81";
-    (await reset_simulation());
-    "84";
-    async function animate() {
-        "85";
-        "86";
-        (await rate(100));
-        "88";
-        if (reset_flag) {
-            "89";
-            (await reset_simulation());
-            "90";
+      reset_simulation();
+
+      // アニメーションループ
+      async function animate() {
+        while (true) {
+          await rate(100);
+
+          if (reset_flag) {
+            reset_simulation();
             reset_flag = false;
-            "92";
-        }
-        if (running) {
-            "93";
-            ball1.pos=ball1.pos["+"](ball1.vel["*"](h));
-            "94";
-            ball1.vel=ball1.vel["+"](vec(0, 1["-u"]()["*"](g), 0)["*"](h));
-            "95";
-            ball2.pos=ball2.pos["+"](ball2.vel["*"](h));
-            "96";
-            ball2.vel=ball2.vel["+"](vec(0, 1["-u"]()["*"](g), 0)["*"](h));
-            "97";
-            t=t["+"](h);
-            "100";
-            if (mag(ball1.pos["-"](1["*"](ball2.pos)))["<"](.1)) {
-                "101";
-                running = false;
-                "102";
-                if (ball1.pos.y[">"](0)) {
-                    "103";
-                    print("ハント成功！接触時刻: t = "["+"](ρσ_str.format("{:.2f}", t))["+"](" s, 接触y座標: ")["+"](ρσ_str.format("{}", ball1.pos.y))["+"](""));
-                    "104";
-                } else {
-                    "105";
-                    print("ハント失敗！接触時刻: t = "["+"](ρσ_str.format("{:.2f}", t))["+"](" s"));
-                    "108";
-                }
+          }
+
+          if (running) {
+            ball1.pos = ball1.pos.add(ball1.vel.multiply(h));
+            ball1.vel = ball1.vel.add(vec(0, -g * h, 0));
+            ball2.pos = ball2.pos.add(ball2.vel.multiply(h));
+            ball2.vel = ball2.vel.add(vec(0, -g * h, 0));
+            t += h;
+
+            // ボール1とボール2の接触判定
+            if (mag(ball1.pos.subtract(ball2.pos)) < 1e-1) {
+              running = false;
+              if (ball1.pos.y > 0) {
+                console.log(`ハント成功！接触時刻: t = ${t.toFixed(2)} s, 接触y座標: ${ball1.pos.y}`);
+              } else {
+                console.log(`ハント失敗！接触時刻: t = ${t.toFixed(2)} s`);
+              }
             }
-            if (ball1.pos.y["<="](0)) {
-                "109";
-                running = false;
-                "110";
-                print("ハント失敗！t = "["+"](ρσ_str.format("{:.2f}", t))["+"](" s"));
+
+            // ボール1が地面に到達
+            if (ball1.pos.y <= 0) {
+              running = false;
+              console.log(`ハント失敗！t = ${t.toFixed(2)} s`);
             }
+          }
         }
-    };
-    if (!animate.__module__) Object.defineProperties(animate, {
-        __module__ : {value: null}
-    });
+      }
 
-    "113";
-    while (true) {
-        "114";
-        (await animate());
-    }
-};
-if (!__main__.__module__) Object.defineProperties(__main__, {
-    __module__ : {value: null}
-});
-
-;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
-// END JAVASCRIPT
-
-//--><!]]></script>
-</div>
+      animate();
+    })();
+  </script>
+</body>
+</html>
