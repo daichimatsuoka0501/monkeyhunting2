@@ -17,10 +17,11 @@
     // 初期化: 必須
     window.__context = { glowscript_container: "glowscript" };
 
-    // JavaScriptコードのスタート
+    // JavaScriptコードの開始
     (async function() {
       "use strict";
 
+      // シーン設定
       var scene = canvas({center: vec(10, 10, 0), width: 800, height: 800, range: 20});
       var g = 9.8; // 重力加速度
       var h = 0.005; // 時間の刻み
@@ -31,11 +32,11 @@
       var t = 0; // 時間
       var L = 20; // 初期の位置
 
-      // ボールの定義
+      // ボール設定
       var ball1 = sphere({pos: vec(0, 0, 0), radius: 0.5, color: color.red, make_trail: true, trail_type: "points", interval: 10, retain: 100});
       var ball2 = sphere({radius: 0.5, color: color.blue, make_trail: true, trail_type: "points", interval: 10, retain: 100});
 
-      // スライダーやボタンなど、インターフェース設定を続けて記述...
+      // スライダーやボタンなどのUI設定をここに記述...
 
       async function animate() {
         rate(100);
@@ -50,7 +51,7 @@
           ball1.vel = ball1.vel.add(vec(0, -g * h, 0));
           t += h;
 
-          // 衝突検知などをここで実装...
+          // 衝突判定など...
         }
       }
 
@@ -64,6 +65,7 @@
         t = 0;
       }
 
+      // アニメーションループ
       while (true) {
         await animate();
       }
