@@ -70,7 +70,7 @@
 
       scene.append_to_caption("\n");
 
-      const velocity_label = wtext({text: Initial Velocity: ${v0.toFixed(1)} m/s});
+      const velocity_label = wtext({text: `Initial Velocity: ${v0.toFixed(1)} m/s`});
       scene.append_to_caption("\n");
 
       slider({
@@ -81,14 +81,14 @@
         length: 300,
         bind: function (s) {
           v0 = s.value;
-          velocity_label.text = Initial Velocity: ${v0.toFixed(1)} m/s;
+          velocity_label.text = `Initial Velocity: ${v0.toFixed(1)} m/s`;
           reset_flag = true;
         },
       });
 
       scene.append_to_caption("\n");
 
-      const angle_label = wtext({text: Initial Angle: ${(theta * 180 / Math.PI).toFixed(1)}°});
+      const angle_label = wtext({text: `Initial Angle: ${(theta * 180 / Math.PI).toFixed(1)}°`});
       scene.append_to_caption("\n");
 
       slider({
@@ -99,7 +99,7 @@
         length: 300,
         bind: function (s) {
           theta = (s.value * Math.PI) / 180;
-          angle_label.text = Initial Angle: ${s.value.toFixed(1)}°;
+          angle_label.text = `Initial Angle: ${s.value.toFixed(1)}°`;
           reset_flag = true;
         },
       });
@@ -138,15 +138,15 @@
             running = false;
             console.log(
               ball1.pos.y > 0
-                ? ハント成功！接触時刻: t = ${t.toFixed(2)} s, 接触y座標: ${ball1.pos.y}
-                : ハント失敗！接触時刻: t = ${t.toFixed(2)} s
+                ? `ハント成功！接触時刻: t = ${t.toFixed(2)} s, 接触y座標: ${ball1.pos.y}`
+                : `ハント失敗！接触時刻: t = ${t.toFixed(2)} s`
             );
           }
 
           // 地面到達判定
           if (ball1.pos.y <= 0) {
             running = false;
-            console.log(ハント失敗！t = ${t.toFixed(2)} s);
+            console.log(`ハント失敗！t = ${t.toFixed(2)} s`);
           }
         }
       }
